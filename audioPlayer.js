@@ -47,7 +47,6 @@
   };
 
   var Player = function() {
-
     this.audio = new Audio();
 
     this.slider = ko.observable(new Slider());
@@ -127,7 +126,6 @@
   };
 
   Player.prototype.initOrUpdate = function(valueAccessor, allBindings, viewModel) {
-
     this.track(ko.utils.unwrapObservable(allBindings().audioFile));
 
     this.audio.autoplay = ko.utils.unwrapObservable(allBindings().autoplay);
