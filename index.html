@@ -1,0 +1,31 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>
+		Knockout audio player
+	</title>
+	<script type="text/javascript" src='knockout-3.0.0.js'></script>
+	<script type="text/javascript" src='audioPlayer.js'></script>
+	
+	<link rel="stylesheet" type="text/css" href="audioPlayer.css">
+</head>
+<body>
+	<p>
+		Пример1.
+		<xmp>
+		<div data-bind='audioPlayer, audioFile:curentFile,nextAudio:next, prevAudio:prev' style='width:250px'>
+		</div>
+		</xmp>
+		<div data-bind='audioPlayer, audioFile:curentFile,nextAudio:next, prevAudio:prev' style='width:250px'>
+		</div>
+		Пример2.
+		<xmp>
+			<div data-bind='audioPlayer, audioList:audioList' style='width:250px'>
+		</div>
+		</xmp>
+		<div data-bind='audioPlayer, audioList:audioList' style='width:250px'>
+		</div>
+	</p>
+		<script type="text/javascript" src='audioPlayerExample.js'></script>
+</body>
+</html>
