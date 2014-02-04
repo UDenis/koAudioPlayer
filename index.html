@@ -11,20 +11,10 @@
 </head>
 <body>
 	<p>
-		Пример1.
-		<xmp>
-		<div data-bind='audioPlayer, audioFile:curentFile,nextAudio:next, prevAudio:prev' style='width:250px'>
+		
+		<div data-bind='audioPlayer, audioFile:curentFile,nextAudio:next, prevAudio:prev, autoplay: autoplay, events:{ended:ended}' style='width:250px'>
 		</div>
-		</xmp>
-		<div data-bind='audioPlayer, audioFile:curentFile,nextAudio:next, prevAudio:prev' style='width:250px'>
-		</div>
-		Пример2.
-		<xmp>
-			<div data-bind='audioPlayer, audioList:audioList' style='width:250px'>
-		</div>
-		</xmp>
-		<div data-bind='audioPlayer, audioList:audioList' style='width:250px'>
-		</div>
+		
 	</p>
 		<script type="text/javascript" src='audioPlayerExample.js'></script>
 </body>
