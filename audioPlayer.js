@@ -73,7 +73,6 @@
     this._init();
   };
 
-
   Player.prototype._init = function() {
     this.audio = new Audio();
 
@@ -179,6 +178,5 @@
 
     Track: Track
   };
-
 
 })(ko)
