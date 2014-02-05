@@ -7,18 +7,41 @@
     "<button type='button' data-bind='click:mute, css:{active:isMute}' class='btn mute'></button>" +
     "<button type='button' data-bind='click:prev' class='btn prev'></button>" +
     "<button type='button' data-bind='click:next' class='btn next'></button>" +
-    "<span  class='trackName' data-bind='text:track() && track().name'></span>";
+    "<span  class='trackName' data-bind='text:track() && track().name'></span>",
 
-  var isFunction = function(f) {
-    return typeof f == "function";
-  };
+    isFunction = function(f) {
+      return typeof f === "function";
+    },
 
-  var Track = function(url, name) {
+    renderPlayer = function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      element.innerHTML = playerTemplate;
+      element.className += " player";
+      valueAccessor = getAccessor(valueAccessor, allBindings, viewModel);
+      return ko.bindingHandlers.template.init(element, valueAccessor);
+    },
+
+    updatePlayer = function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+      valueAccessor = getAccessor(valueAccessor, allBindings, viewModel);
+      return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindingContext);
+    },
+
+    getAccessor = function(valueAccessor, allBindings, viewModel, updating) {
+      return function() {
+        var vm = allBindings.audioPlayerVM = allBindings.audioPlayerVM || new Player();
+        vm.initOrUpdate(valueAccessor, allBindings, viewModel);
+        return {
+          templateEngine: ko.nativeTemplateEngine.instance,
+          data: vm
+        };
+      };
+    };
+
+  function Track(url, name) {
     this.url = url;
     this.name = name;
   };
 
-  var Slider = function() {
+  function Slider() {
     var self = this;
 
     // current track duration
@@ -46,7 +69,12 @@
     !this.manualChanging && (this.currentValue(value));
   };
 
-  var Player = function() {
+  function Player() {
+    this._init();
+  };
+
+
+  Player.prototype._init = function() {
     this.audio = new Audio();
 
     this.slider = ko.observable(new Slider());
@@ -65,7 +93,7 @@
     }, this);
 
     this.isPause = ko.observable(true);
-    this.initEvents();
+    this._initEvents();
   };
 
   Player.prototype.play = function() {
@@ -99,9 +127,9 @@
     };
   };
 
-  Player.prototype.initEvents = function() {
-    var self = this;
-    var audio = this.audio;
+  Player.prototype._initEvents = function() {
+    var self = this,
+      audio = this.audio;
 
     audio.addEventListener('timeupdate', function() {
       self.slider().setCurrentValue(audio.currentTime);
@@ -140,29 +168,6 @@
     this.prev = this.callbackProxy(ko.utils.unwrapObservable(allBindings().prevAudio), viewModel);
   };
 
-  var renderPlayer = function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    element.innerHTML = playerTemplate;
-    element.className += " player";
-    valueAccessor = getAccessor(valueAccessor, allBindings, viewModel);
-    return ko.bindingHandlers.template.init(element, valueAccessor);
-  };
-
-  var updatePlayer = function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    valueAccessor = getAccessor(valueAccessor, allBindings, viewModel);
-    return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindingContext);
-  }
-
-  var getAccessor = function(valueAccessor, allBindings, viewModel, updating) {
-    return function() {
-      var vm = allBindings.audioPlayerVM = allBindings.audioPlayerVM || new Player();
-      vm.initOrUpdate(valueAccessor, allBindings, viewModel);
-      return {
-        templateEngine: ko.nativeTemplateEngine.instance,
-        data: vm
-      };
-    };
-  };
-
   ko.bindingHandlers.audioPlayer = {
     init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       return renderPlayer(element, valueAccessor, allBindings, viewModel, bindingContext);
@@ -170,7 +175,10 @@
 
     update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       return updatePlayer(element, valueAccessor, allBindings, viewModel, bindingContext);
-    }
+    },
+
+    Track: Track
   };
+
 
 })(ko)
